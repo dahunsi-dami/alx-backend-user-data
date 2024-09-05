@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """ Module for user credential management. """
 from api.v1.auth.auth import Auth
+from models.user import User
+from typing import TypeVar
 import base64
 
 
@@ -72,3 +74,30 @@ class BasicAuth(Auth):
             return None, None
 
         return details[0], details[1]
+
+    def user_object_from_credentials(self, user_email: str, user_pwd: str) -> TypeVar('User'):  # noqa: E501
+        """
+        Gets user instance based on his/her email & password.
+
+        Returns:
+            - None if user_email is Nonen or not a string.
+            - None if user_pwd is None or not a string.
+            - None if db contains no User instance with user_email.
+            - None if user_pwd is not password of User instance found.
+            - Otherwise, User instance.
+        """
+        if user_email is None or not isinstance(user_email, str):
+            return None
+        if user_pwd is None or not isinstance(user_pwd, str):
+            return None
+
+        user_list = User.search({'email': user_email})
+        if not user_list:
+            return None
+
+        user = user_list[0]
+
+        if not user.is_valid_password(user_pwd):
+            return None
+
+        return user
