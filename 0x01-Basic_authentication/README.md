@@ -7,7 +7,7 @@ Simple HTTP API for playing with `User` model.
 
 ### `models/`
 
-- `base.py`: base of all models of the API - handle serialization to file
+- `base.py`: base of all the models of the API - handle serialization to file
 - `user.py`: user model
 
 ### `api/v1`
