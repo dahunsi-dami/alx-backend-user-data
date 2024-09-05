@@ -5,7 +5,7 @@ from api.v1.auth.auth import Auth
 
 class BasicAuth(Auth):
     """The class to manage user credentials with base64 encoding."""
-    def extract_base64_authorization_header(self, authorization_header: str) -> str:
+    def extract_base64_authorization_header(self, authorization_header: str) -> str:  # noqa: E501
         """
         Gets base64 part of Authorization header-
         -for a basic authentication.
