@@ -33,6 +33,10 @@ class Auth:
             excl_path = excl_path.rstrip('/')
             if path == excl_path:
                 return False
+            nostar_path = excl_path.rstrip('*')
+            path_size = len(nostar_path)
+            if path[:path_size] == nostar_path:
+                return False
 
         return True
 
