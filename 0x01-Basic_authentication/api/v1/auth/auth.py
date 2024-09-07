@@ -29,9 +29,9 @@ class Auth:
 
         path = path.rstrip('/')
 
-        for removed_path in excluded_paths:
-            removed_path = removed_path.rstrip('/')
-            if path == removed_path:
+        for excl_path in excluded_paths:
+            excl_path = excl_path.rstrip('/')
+            if fnmatch.fnmatch(path, excl_path):
                 return False
 
         return True
