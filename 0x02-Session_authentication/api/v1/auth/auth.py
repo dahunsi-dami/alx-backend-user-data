@@ -2,6 +2,7 @@
 """ Module for API auth management. """
 from flask import request
 from typing import List, TypeVar
+import os
 
 User = TypeVar('User')
 
@@ -52,3 +53,24 @@ class Auth:
     def current_user(self, request=None) -> TypeVar('User'):
         """ Returns the current user. """
         return None
+
+    def session_cookie(self, request=None):
+        """
+        Gets a cookie value from a request.
+
+        Returns:
+            - None if request is None
+            - Value of cookie named _my_session_id from request.
+
+        Name of cookie must be defined by env variable SESSION_NAME.
+        Must use env variable SESSION_NAME to define name of-
+        -cookie used for the Session ID.
+        """
+        if request is None:
+            return None
+        session_name = os.getenv("SESSION_NAME")
+
+        if session_name is None:
+            return None
+
+        return request.cookies.get(session_name)
