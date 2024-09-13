@@ -77,12 +77,12 @@ class DB:
         try:
             user = self.find_user_by(id=user_id)
         except NoResultFound:
-            raise ValueError(f"No user found with id {user_id}")
+            raise ValueError
 
         for k, v in kwargs.items():
             if hasattr(user, k):
                 setattr(user, k, v)
             else:
-                raise ValueError(f"Invalid attribute: {key}")
+                raise ValueError
 
         self._session.commit()
