@@ -64,7 +64,9 @@ class SessionAuth(Auth):
         if user_id is None:
             return None
 
-        return User.get(user_id)
+        user = User.get(user_id)
+
+        return user
 
     def destroy_session(self, request=None):
         """
