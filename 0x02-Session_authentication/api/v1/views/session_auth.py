@@ -49,6 +49,10 @@ def logout():
     """
     Route to handle user logout.
     """
-    if not auth.destroy_session(request):
-        abort(404)
-    return jsonify({}), 200
+    try:
+        from api.v1.app import auth
+        if not auth.destroy_session(request):
+            abort(404)
+        return jsonify({}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
