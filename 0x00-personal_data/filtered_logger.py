@@ -4,7 +4,7 @@
 import re
 
 
-def filter_datum(fields, redaction, message, separator):
+def filter_datum(fields: List[str], redaction: str, message: str, separator: str) -> str: # noqa: E501
     """
     Uses regex to replace occurrences of certain field values.
 
