@@ -27,8 +27,17 @@ def filter_datum(fields: List[str], redaction: str, message: str, separator: str
         message
     )
 
+
 class RedactingFormatter(logging.Formatter):
-    """ Redacting Formatter class """
+    """
+    This is the redacting formatter class.
+
+    Filters values in incoming log records w/ filter_datum,
+    while values for fields in `fields` should be filtered.
+
+    FORMAT mustn't be extrapolated manually, and
+    format method should be < 5 lines long.
+    """
 
     REDACTION = "***"
     FORMAT = "[HOLBERTON] %(name)s %(levelname)s %(asctime)-15s: %(message)s"
@@ -39,5 +48,10 @@ class RedactingFormatter(logging.Formatter):
         self.fields = fields
 
     def format(self, record: logging.LogRecord) -> str:
-        record.message = filter_datum(self.fields, self.REDACTION, record.getMessage(), self.SEPARATOR)
+        record.message = filter_datum(
+            self.fields,
+            self.REDACTION,
+            record.getMessage(),
+            self.SEPARATOR
+    )
         return super().format(record)
