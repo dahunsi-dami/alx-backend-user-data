@@ -3,7 +3,9 @@
 
 import re
 import logging
-from typing import List
+from typing import List, Tuple
+
+PII_FIELDS: Tuple[str, ...] = ("name", "email", "phone", "ssn", "password")
 
 
 def filter_datum(fields: List[str], redaction: str, message: str, separator: str) -> str:  # noqa: E501
@@ -70,3 +72,27 @@ class RedactingFormatter(logging.Formatter):
             self.SEPARATOR + ' '
         )
         return super().format(record)
+
+
+def get_logger() -> logging.Logger:
+    """
+    Creates and configures a logger for user data.
+
+    The logger:
+    - Is named "user_data".
+    - Logs up to INFO level.
+    - Does not propagate to other loggers.
+    - Has a StreamHandler with RedactingFormatter applied to it.
+
+    Returns:
+        logging.Logger: Configured logger instance for user data.
+    """
+    logger = logging.getLogger("user_data")
+    logger.setLevel(logging.INFO)
+    logger.propagate = False
+
+    stream_handler = logging.StreamHandler()
+    stream_handler.setFormatter(RedactingFormatter(fields=PII_FIELDS))
+    logger.addHandler(stream_handler)
+
+    return logger
