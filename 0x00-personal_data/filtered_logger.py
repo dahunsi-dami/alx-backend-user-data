@@ -53,5 +53,5 @@ class RedactingFormatter(logging.Formatter):
             self.REDACTION,
             record.getMessage(),
             self.SEPARATOR
-    )
+        )
         return super().format(record)
