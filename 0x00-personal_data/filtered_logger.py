@@ -1,8 +1,11 @@
 #!/usr/bin/env python3
 """String obfuscation module that obfuscates data with regex."""
 
+import os
 import re
 import logging
+import mysql.connector
+from mysql.connector import connection
 from typing import List, Tuple
 
 PII_FIELDS: Tuple[str, ...] = ("name", "email", "phone", "ssn", "password")
@@ -96,3 +99,33 @@ def get_logger() -> logging.Logger:
     logger.addHandler(stream_handler)
 
     return logger
+
+
+def get_db() -> connection.MySQLConnection:
+    """
+    Establishes and returns a secure connection to a MySQL database.
+
+    The function retrieves database credentials from environment variables:
+    - PERSONAL_DATA_DB_USERNAME: Database username (default: 'root').
+    - PERSONAL_DATA_DB_PASSWORD: Database password (default: empty string).
+    - PERSONAL_DATA_DB_HOST: Database host (default: 'localhost').
+    - PERSONAL_DATA_DB_NAME: Database name.
+
+    Returns:
+        mysql.connector.connection.MySQLConnection:
+        A connection to the database.
+    """
+    db_user = os.getenv("PERSONAL_DATA_DB_USERNAME", "root")
+    db_password = os.getenv("PERSONAL_DATA_DB_PASSWORD", "")
+    db_host = os.getenv("PERSONAL_DATA_DB_HOST", "localhost")
+    db_name = os.getenv("PERSONAL_DATA_DB_NAME")
+
+    # Establish the database connection
+    return mysql.connector.connect(
+        user=db_user,
+        password=db_password,
+        host=db_host,
+        database=db_name,
+        charset='utf8mb4',
+        collation='utf8mb4_general_ci'
+    )
